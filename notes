@@ -2,3 +2,9 @@
 - The publisher node is called chatter and then the subscriber subscribed to this named node (ex2p1.2)
 When you create a topic in ros, messages are exchanged between nodes, but the message type must be a single type of message (string, JPEG image, etc)
 
+Seems to be a helpful link to understand how to do wheel odometry with duckiebots specifically: https://docs-old.duckietown.org/daffy/duckietown-robotics-development/out/odometry_modeling.html
+-- It shows that distance travelled by robot, x
+x = 2 * pi * R * (N_ticks / N_total)
+N_total for our duckiebot is 135
+N_ticks gotten via subscribing to the encoder reader topic
+R can be achieved by getting the parameter for kinematics_node/radius topic. Remember that we even set the trim param, and were able to see the radius as one of the params
