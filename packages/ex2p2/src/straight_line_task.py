@@ -10,9 +10,9 @@ import math
 # Constants
 FORWARD = 1
 BACKWARD = -1
-N_TOTAL_TICKS = 135
+N_TOTAL_TICKS = 135 # DB Series duckiebot resolution is 135
 PI = math.pi
-DISTANCE = 1.25
+DISTANCE = 1.25 # Distance required as per exercise description
 
 
 
@@ -36,53 +36,55 @@ class WheelControlNode(DTROS):
         self.sub_left = rospy.Subscriber(self._left_encoder_topic, WheelEncoderStamped, self.callback_left)
         self.sub_right = rospy.Subscriber(self._right_encoder_topic, WheelEncoderStamped, self.callback_right)
         
-        # temporary data storage
+        # Get the initial ticks rotated at the time of starting the program
         self._ticks_left = rospy.wait_for_message(self._left_encoder_topic, WheelEncoderStamped).data
-        self._ticks_right = rospy.wait_for_message(self._left_encoder_topic, WheelEncoderStamped).data
+        self._ticks_right = rospy.wait_for_message(self._right_encoder_topic, WheelEncoderStamped).data
 
+        # At the time of running my code, I get 0.0318m as the radius from ros
+        # This is very close to the typical radius of the DB series bot of 0.0325m
         self._wheel_radius = rospy.get_param(f"/{vehicle_name}/kinematics_node/radius")
         print(self._wheel_radius)
 
+        # Calculate total distance in ticks
+        # Note: Distance travelled = 2*pi*r * (N_ticks / N_total_ticks)
         self._total_distance_in_ticks = (DISTANCE * N_TOTAL_TICKS) / (2 * PI * self._wheel_radius)
         print(self._total_distance_in_ticks)
         self._direction = FORWARD
         
         # form the initial velocity to publish
-        self._vel_left = 0.4
-        self._vel_right = 0.4
-        
-        
+        self._vel_left = 0.3
+        self._vel_right = 0.3
 
     def run(self):
-        # publish 10 messages every second (10 Hz)
-        rate = rospy.Rate(0.1)
+        rate = rospy.Rate(10)
 
         # Get initial ticks
         initial_left_ticks = self._ticks_left
         initial_right_ticks = self._ticks_right
 
-        while not rospy.is_shutdown():
-            # get distance travelled so far in ticks
+        self._vel_left = 0.3
+        self._vel_right = 0.3
 
-            # print(self._ticks_left)
-            # print(self._ticks_left)
-            
+        while not rospy.is_shutdown():
+
+            # get distance travelled so far in ticks            
             distance_travelled_left = abs(self._ticks_left - initial_left_ticks)
             distance_travelled_right = abs(self._ticks_right - initial_right_ticks)
             distance_travelled = (distance_travelled_left + distance_travelled_right) / 2
             rospy.loginfo(f"distance travelled: {distance_travelled}")
 
+
             if (distance_travelled >= self._total_distance_in_ticks):
                 print("max distance travelled")
                 if (self._direction == FORWARD):
-                    print("got here")
+                    print("completed forward movement, go backward")
                     self._direction = BACKWARD
                     self._vel_left = self._vel_left * self._direction
                     self._vel_right = self._vel_right * self._direction
                     initial_left_ticks = self._ticks_left
                     initial_right_ticks = self._ticks_right
                 else:
-                    print("got to on shutdown")
+                    print("Completed backward movement, shutdown")
                     self.on_shutdown()
                     break
 
