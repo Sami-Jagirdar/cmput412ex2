@@ -1,0 +1,4 @@
+- rospy.spin() might be the key to exiting the process once the program finishes running
+- The publisher node is called chatter and then the subscriber subscribed to this named node (ex2p1.2)
+When you create a topic in ros, messages are exchanged between nodes, but the message type must be a single type of message (string, JPEG image, etc)
+
