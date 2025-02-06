@@ -1,0 +1,11 @@
+<package>
+  <name>ex2p2</name>
+  <version>0.0.1</version>
+  <description>
+  My first Catkin package in Duckietown.
+  </description>
+  <maintainer email="jagirdar@ualberta.ca">Sami Jagirdar</maintainer>
+  <license>None</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
