@@ -3,8 +3,57 @@
 When you create a topic in ros, messages are exchanged between nodes, but the message type must be a single type of message (string, JPEG image, etc)
 
 Seems to be a helpful link to understand how to do wheel odometry with duckiebots specifically: https://docs-old.duckietown.org/daffy/duckietown-robotics-development/out/odometry_modeling.html
--- It shows that distance travelled by robot, x
+-- It shows that distance travelled by the WHEELS each, x
 x = 2 * pi * R * (N_ticks / N_total)
 N_total for our duckiebot is 135
 N_ticks gotten via subscribing to the encoder reader topic
 R can be achieved by getting the parameter for kinematics_node/radius topic. Remember that we even set the trim param, and were able to see the radius as one of the params
+
+Note that while the videos were pretty accurate, it took multiple tries, there were always deviations and it usually has to do with slippage, wheel wobble, callibration, ground material etc. We assume perfect rolling in our calculations, but it's not always the case
+
+For the rotation task
+Rotating on the spot, we know that arc_length = d * theta where d is the distance to centre of the bot. we also know that arc length for each wheel is 2 * pi * R (N_ticks/N_total_ticks)
+
+Therefore, we can calculte theta as (arc_length_left - arc_length_right)/d
+
+Note that we KNOW the arc_length is the same as x above simply because x is the distance travelled by the wheels and while rotating on the spot, the bot may have not travelled any distance, the wheels have still travelled a distance equal to the arc length.
+
+/csc22926/auto_calibration_calculation_node/car_cmd
+/csc22926/auto_calibration_node/car_cmd
+/csc22926/button_driver_node/event
+/csc22926/camera_node/camera_info
+/csc22926/camera_node/image/compressed
+/csc22926/car_cmd_switch_node/cmd
+/csc22926/client_count
+/csc22926/connected_clients
+/csc22926/coordinator_node/car_cmd
+/csc22926/diagnostics/code/profiling
+/csc22926/diagnostics/ros/links
+/csc22926/diagnostics/ros/node
+/csc22926/diagnostics/ros/parameters
+/csc22926/diagnostics/ros/topics
+/csc22926/display_driver_node/fragments
+/csc22926/duckiebot_il_lane_following/car_cmd
+/csc22926/fsm_node/mode
+/csc22926/joint_states
+/csc22926/joy
+/csc22926/joy/set_feedback
+/csc22926/joy_mapper_node/car_cmd
+/csc22926/joy_mapper_node/joystick_override
+/csc22926/kinematics_node/velocity
+/csc22926/lane_controller_node/car_cmd
+/csc22926/lane_recovery_node/car_cmd
+/csc22926/lane_supervisor_node/car_cmd
+/csc22926/led_emitter_node/led_pattern
+/csc22926/left_wheel_encoder_node/tick
+/csc22926/right_wheel_encoder_node/tick
+/csc22926/simple_stop_controller_node/car_cmd
+/csc22926/velocity_to_pose_node/pose
+/csc22926/wheels_driver_node/emergency_stop
+/csc22926/wheels_driver_node/wheels_cmd
+/csc22926/wheels_driver_node/wheels_cmd_executed
+/diagnostics
+/rosout
+/rosout_agg
+/tf
+/tf_static
