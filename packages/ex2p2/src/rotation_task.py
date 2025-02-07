@@ -6,16 +6,10 @@ from duckietown.dtros import DTROS, NodeType
 from duckietown_msgs.msg import WheelsCmdStamped, WheelEncoderStamped
 import math
 
-
-# Constants
-FORWARD = 1
-BACKWARD = -1
-N_TOTAL_TICKS = 135 # DB Series duckiebot resolution is 135
+RESOLUTION = 135
+CLOCKWISE = 1
+COUNTER_CLOCKWISE = -1
 PI = math.pi
-DISTANCE = 1.25 # Distance required as per exercise description
-
-
-
 
 class WheelControlNode(DTROS):
 
@@ -44,49 +38,48 @@ class WheelControlNode(DTROS):
         # This is very close to the typical radius of the DB series bot of 0.0325m
         self._wheel_radius = rospy.get_param(f"/{vehicle_name}/kinematics_node/radius")
         print(self._wheel_radius)
-
-        # Calculate total distance in ticks
-        # Note: Distance travelled = 2*pi*r * (N_ticks / N_total_ticks)
-        self._total_distance_in_ticks = (DISTANCE * N_TOTAL_TICKS) / (2 * PI * self._wheel_radius)
-        print(self._total_distance_in_ticks)
-        self._direction = FORWARD
+        self._wheelbase = 0.09 # Manually measured this on the duckiebot and callibrated
+        self._direction = CLOCKWISE
         
         # form the initial velocity to publish
         self._vel_left = 0.3
-        self._vel_right = 0.3
+        self._vel_right = -0.3
 
     def run(self):
-        rate = rospy.Rate(10)
+        rate = rospy.Rate(20)
 
         # Get initial ticks
         initial_left_ticks = self._ticks_left
         initial_right_ticks = self._ticks_right
 
         self._vel_left = 0.3
-        self._vel_right = 0.3
+        self._vel_right = -0.3
 
         while not rospy.is_shutdown():
 
-            # get distance travelled so far in ticks            
-            distance_travelled_left = abs(self._ticks_left - initial_left_ticks)
-            distance_travelled_right = abs(self._ticks_right - initial_right_ticks)
-            distance_travelled = (distance_travelled_left + distance_travelled_right) / 2
-            rospy.loginfo(f"distance travelled: {distance_travelled}")
+            # get distance travelled (arc length) by left wheel            
+            distance_travelled_left = abs(self._ticks_left - initial_left_ticks) * (2 * PI * self._wheel_radius) / RESOLUTION
+            # get distance travelled (arc length) by right wheel
+            distance_travelled_right = abs(self._ticks_right - initial_right_ticks) * (2 * PI * self._wheel_radius) / RESOLUTION
+            # get final angle travelled about the center of the wheel base
+            angle = (distance_travelled_left + distance_travelled_right) / self._wheelbase
+            rospy.loginfo(f"angle rotated: {angle}")
 
 
-            if (distance_travelled >= self._total_distance_in_ticks):
-                print("max distance travelled")
-                if (self._direction == FORWARD):
-                    print("completed forward movement, go backward")
+            if (angle >= PI/2):
 
-                    # Change direction of motion and reset ticks
-                    self._direction = BACKWARD
+                if (self._direction == CLOCKWISE):
+                    print("Rotated 90 degrees clockwise")
+
+                    # Change direction of rotation and reset ticks
+                    self._direction = COUNTER_CLOCKWISE
                     self._vel_left = self._vel_left * self._direction
                     self._vel_right = self._vel_right * self._direction
                     initial_left_ticks = self._ticks_left
                     initial_right_ticks = self._ticks_right
+
                 else:
-                    print("Completed backward movement, shutdown")
+                    print("Rotated 90 degrees counter clockwise")
                     self.on_shutdown()
                     break
 

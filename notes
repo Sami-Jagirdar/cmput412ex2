@@ -9,7 +9,7 @@ N_total for our duckiebot is 135
 N_ticks gotten via subscribing to the encoder reader topic
 R can be achieved by getting the parameter for kinematics_node/radius topic. Remember that we even set the trim param, and were able to see the radius as one of the params
 
-Note that while the videos were pretty accurate, it took multiple tries, there were always deviations and it usually has to do with slippage, wheel wobble, callibration, ground material etc. We assume perfect rolling in our calculations, but it's not always the case
+Note that while the videos were pretty accurate, it took multiple tries, there were always deviations and it usually has to do with slippage, wheel wobble, callibration, ground material etc. We assume perfect rolling in our calculations, but it's not always the case. Another case might be that the comparison that distance has been reached or angle has been rotated might be happening when the current distance/angle has already overshooted the target distance/angle by a considerable amount
 
 For the rotation task
 Rotating on the spot, we know that arc_length = d * theta where d is the distance to centre of the bot. we also know that arc length for each wheel is 2 * pi * R (N_ticks/N_total_ticks)
@@ -18,6 +18,11 @@ Therefore, we can calculte theta as (arc_length_left - arc_length_right)/d
 
 Note that we KNOW the arc_length is the same as x above simply because x is the distance travelled by the wheels and while rotating on the spot, the bot may have not travelled any distance, the wheels have still travelled a distance equal to the arc length.
 
+Measured 0.1 as d
+
+I tried being cheeky and added a rospy.sleep() but that messed everything up
+
+ROSTOPIC LIST
 /csc22926/auto_calibration_calculation_node/car_cmd
 /csc22926/auto_calibration_node/car_cmd
 /csc22926/button_driver_node/event
