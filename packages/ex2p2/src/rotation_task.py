@@ -38,6 +38,8 @@ class WheelControlNode(DTROS):
         # This is very close to the typical radius of the DB series bot of 0.0325m
         self._wheel_radius = rospy.get_param(f"/{vehicle_name}/kinematics_node/radius")
         print(self._wheel_radius)
+
+        # wheelbase = 2*l where l is the distance from a center of the wheel to the center of rotation which is 
         self._wheelbase = 0.09 # Manually measured this on the duckiebot and callibrated
         self._direction = CLOCKWISE
         
@@ -61,7 +63,7 @@ class WheelControlNode(DTROS):
             distance_travelled_left = abs(self._ticks_left - initial_left_ticks) * (2 * PI * self._wheel_radius) / RESOLUTION
             # get distance travelled (arc length) by right wheel
             distance_travelled_right = abs(self._ticks_right - initial_right_ticks) * (2 * PI * self._wheel_radius) / RESOLUTION
-            # get final angle travelled about the center of the wheel base
+            # get final angle travelled about the center of the wheel base (can simply add d_r and d_l since total arc length distance, note that normally, with displacement, it would d_right - d_left)
             angle = (distance_travelled_left + distance_travelled_right) / self._wheelbase
             rospy.loginfo(f"angle rotated: {angle}")
 
@@ -110,5 +112,6 @@ if __name__ == '__main__':
     node = WheelControlNode(node_name='wheel_control_node')
     # run node
     node.run()
-    # keep the process from terminating
-    # rospy.spin()
+    
+    # Terminate the process
+    rospy.signal_shutdown("Completed rotation task")

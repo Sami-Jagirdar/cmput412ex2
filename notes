@@ -1,4 +1,3 @@
-- rospy.spin() might be the key to exiting the process once the program finishes running
 - The publisher node is called chatter and then the subscriber subscribed to this named node (ex2p1.2)
 When you create a topic in ros, messages are exchanged between nodes, but the message type must be a single type of message (string, JPEG image, etc)
 
@@ -21,6 +20,9 @@ Note that we KNOW the arc_length is the same as x above simply because x is the 
 Measured 0.1 as d
 
 I tried being cheeky and added a rospy.sleep() but that messed everything up
+
+For Part II.5: Our programs did, in fact exit properly after we finish respective tasks. Potential reasons for why it may not shutdown is that the ros nodes could still be active after our particular task is ended, especially with ros commands like spin() which keep subscriber nodes alive even after it reaches the end of the python script to keep listening to messages and that the ros shutdown() command isn't called. 
+In our code, we don't have a call to rospy.spin(), we also have a break statement in our while loop whose condition is to check if rospy.is_shutdown() is true or not. After exiting the while loop, in our main function, we call rospy.signal_shutdown() as well, ensuring that the ROS master terminates all nodes.
 
 ROSTOPIC LIST
 /csc22926/auto_calibration_calculation_node/car_cmd

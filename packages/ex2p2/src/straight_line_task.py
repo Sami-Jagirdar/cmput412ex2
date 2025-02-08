@@ -117,5 +117,6 @@ if __name__ == '__main__':
     node = WheelControlNode(node_name='wheel_control_node')
     # run node
     node.run()
-    # keep the process from terminating
-    # rospy.spin()
+    
+    # terminate the process
+    rospy.signal_shutdown("Completed straight line task")
