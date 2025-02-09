@@ -11,11 +11,11 @@ CLOCKWISE = 1
 COUNTER_CLOCKWISE = -1
 PI = math.pi
 
-class WheelControlNode(DTROS):
+class RotationNode(DTROS):
 
     def __init__(self, node_name):
         # initialize the DTROS parent class
-        super(WheelControlNode, self).__init__(node_name=node_name, node_type=NodeType.GENERIC)
+        super(RotationNode, self).__init__(node_name=node_name, node_type=NodeType.GENERIC)
 
         # static parameters
         vehicle_name = os.environ['VEHICLE_NAME']
@@ -85,16 +85,20 @@ class WheelControlNode(DTROS):
                     self.on_shutdown()
                     break
 
-            message = WheelsCmdStamped(vel_left=self._vel_left, vel_right=self._vel_right)
-            self._publisher.publish(message)
+            self.publish_velocity(self._vel_left, self._vel_right)
             print("published")
             
             rate.sleep()
 
     def on_shutdown(self):
-        stop = WheelsCmdStamped(vel_left=0, vel_right=0)
-        self._publisher.publish(stop)
+        self.publish_velocity(0, 0)
 
+    def publish_velocity(self, vel_left, vel_right):
+        msg = WheelsCmdStamped()
+        msg.header.stamp = rospy.Time.now()
+        msg.vel_left = vel_left
+        msg.vel_right = vel_right
+        self._publisher.publish(msg)
 
     def callback_left(self, data):
         rospy.loginfo_once(f"Left encoder resolution: {data.resolution}")
@@ -109,7 +113,7 @@ class WheelControlNode(DTROS):
 
 if __name__ == '__main__':
     # create the node
-    node = WheelControlNode(node_name='wheel_control_node')
+    node = RotationNode(node_name='wheel_control_node')
     # run node
     node.run()
     

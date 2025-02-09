@@ -24,6 +24,14 @@ I tried being cheeky and added a rospy.sleep() but that messed everything up
 For Part II.5: Our programs did, in fact exit properly after we finish respective tasks. Potential reasons for why it may not shutdown is that the ros nodes could still be active after our particular task is ended, especially with ros commands like spin() which keep subscriber nodes alive even after it reaches the end of the python script to keep listening to messages and that the ros shutdown() command isn't called. 
 In our code, we don't have a call to rospy.spin(), we also have a break statement in our while loop whose condition is to check if rospy.is_shutdown() is true or not. After exiting the while loop, in our main function, we call rospy.signal_shutdown() as well, ensuring that the ROS master terminates all nodes.
 
+https://docs.duckietown.com/daffy/dt-ros-commons/packages/duckietown_protocols.html
+Used for led lights
+
+ROS LED Service has subscriber to task node
+publishes to led_emitter_node
+
+For the curve right part in the D task, have to give quite a lower radius that 0.29 because, wheel slips, which makes it cover a bigger arc than required
+
 ROSTOPIC LIST
 /csc22926/auto_calibration_calculation_node/car_cmd
 /csc22926/auto_calibration_node/car_cmd
