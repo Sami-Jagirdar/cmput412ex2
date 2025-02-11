@@ -35,6 +35,10 @@ Basia Ofovwe [ccid: ofovwe]
 
 ./bag_decode/plot_trajectory_animate.py The same exact logic for plotting the trajectory, but included functions to animate the plotted trajectory in gif (the code for animating the plot was generated using the help of ChatGPT)
 
+# Ensuring Nodes shutdown
+
+For all nodes (except subscriber nodes that are required to persist), ensured that the task logic executed within a while loop is broken out of (using break statement) and also explicitly call rospy.signal_shutdown(). All tasks terminate once the statements are executed
+
 ## Full Write-up
 
 You can read the full project write-up on my website:  
