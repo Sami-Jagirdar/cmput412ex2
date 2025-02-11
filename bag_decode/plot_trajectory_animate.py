@@ -75,6 +75,8 @@ def create_static_plot(trajectory, thetas, output_file='trajectory_static.png'):
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
     plt.close()
 
+# LLM was used to help create the animation. In the prompt, I gave my existing code from 'plot_trajectory_from_velocity.py'
+# and asked it to animate the plots and save it instead of just displaying it
 def create_animation(trajectory, thetas, output_file='trajectory_animation.gif'):
     fig, ax = plt.subplots(figsize=(10, 10))
     
