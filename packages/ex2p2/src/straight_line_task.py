@@ -14,9 +14,6 @@ N_TOTAL_TICKS = 135 # DB Series duckiebot resolution is 135
 PI = math.pi
 DISTANCE = 1.25 # Distance required as per exercise description
 
-
-
-
 class StraightLineNode(DTROS):
 
     def __init__(self, node_name):

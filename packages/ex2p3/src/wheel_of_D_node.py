@@ -47,7 +47,7 @@ class WheelOfDNode(DTROS):
         # This is very close to the typical radius of the DB series bot of 0.0325m
         self._wheel_radius = rospy.get_param(f"/{vehicle_name}/kinematics_node/radius")
 
-        self._wheelbase = 0.085 # Manually measured
+        self._wheelbase = 0.09 # Manually measured
         
         # form the initial velocity to publish
         self._vel_left = 0
@@ -105,7 +105,7 @@ class WheelOfDNode(DTROS):
         # Curve right
         self.curve_right(PI/2, 0.20)
         # Travel 0.35 m straight
-        self.move_straight(0.3)
+        self.move_straight(0.35)
         # Curve right
         self.curve_right(PI/2, 0.20)
         # Travel 0.92 m straight
@@ -130,7 +130,7 @@ class WheelOfDNode(DTROS):
 
         self._vel_left = 0.35
         if (first):
-            self._vel_right = 0.35
+            self._vel_right = 0.38
         else:
             self._vel_right = 0.35
 
