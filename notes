@@ -76,3 +76,9 @@ ROSTOPIC LIST
 /rosout_agg
 /tf
 /tf_static
+
+COMMANDS
+dts devel run -R csc22926 -L ex2p3-D -n publisher
+dts devel build -f
+rosbag record /csc22926/wheels_driver_node/wheels_cmd -O D2.bag
+rostopic list and related commands to get led service info
