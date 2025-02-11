@@ -32,6 +32,10 @@ publishes to led_emitter_node
 
 For the curve right part in the D task, have to give quite a lower radius that 0.29 because, wheel slips, which makes it cover a bigger arc than required
 
+Mention use of chatgpt for plotting
+
+Mention equations for for curve D and for converting from robot frame to world frame
+
 ROSTOPIC LIST
 /csc22926/auto_calibration_calculation_node/car_cmd
 /csc22926/auto_calibration_node/car_cmd

@@ -33,9 +33,7 @@ class CameraReaderNode(DTROS):
 
     def callback(self, msg):
         # convert JPEG bytes to CV image
-        image = self._bridge.compressed_imgmsg_to_cv2(msg)
-        
-        
+        image = self._bridge.compressed_imgmsg_to_cv2(msg)        
         
         # Convert image to grayscale
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

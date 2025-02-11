@@ -130,7 +130,7 @@ class WheelOfDNode(DTROS):
 
         self._vel_left = 0.35
         if (first):
-            self._vel_right = 0.38
+            self._vel_right = 0.38 # Had to give right velocity a little more to make the bot go straight
         else:
             self._vel_right = 0.35
 
@@ -156,7 +156,8 @@ class WheelOfDNode(DTROS):
 
         angle = 0
 
-        while (angle <= (PI-0.33)/2):
+        # Angle a little less than 90 degrees because the high throttle and wheel lateral slippage plus accounting for error required this
+        while (angle <= (PI-0.3)/2):
             self.publish_velocity(self._vel_left, self._vel_right)
 
             distance_travelled_left = abs(self._ticks_left - initial_left_ticks) * (2 * PI * self._wheel_radius) / RESOLUTION
@@ -174,11 +175,16 @@ class WheelOfDNode(DTROS):
         initial_left_ticks = self._ticks_left
         initial_right_ticks = self._ticks_right
 
+        # The centre of the bot travels on a circle of radius 'radius'
+        # But the right and left wheels travel on circles of radius 'radius - wheelbase/2' and 'radius + wheelbase/2' respectively
         arc_radius_right_wheel = radius - self._wheelbase / 2
         arc_radius_left_wheel = radius + self._wheelbase / 2
+
+        # distance = radius * angle
         distance_right_wheel = arc_radius_right_wheel * angle_to_travel
         distance_left_wheel = arc_radius_left_wheel * angle_to_travel
 
+        # Both wheels travel their respective distances in the same time so v_left/v_right = distance_left/distance_right
         self._vel_right = 0.35
         self._vel_left = (distance_left_wheel / distance_right_wheel) * self._vel_right
 
@@ -197,11 +203,6 @@ class WheelOfDNode(DTROS):
         print("curve done\n")
 
         self.stop()
-
-
-
-
-
 
 
 if __name__ == '__main__':

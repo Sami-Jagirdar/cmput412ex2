@@ -49,34 +49,28 @@ def calculate_trajectory(bag_file):
 def create_static_plot(trajectory, thetas, output_file='trajectory_static.png'):
     plt.figure(figsize=(10, 10))
     
-    # Create color gradient along the path
-    points = np.array(trajectory)
-    colors = np.linspace(0, 1, len(points))
+    # Plot the main trajectory
+    plt.plot(trajectory[:,0], trajectory[:,1], 'b-', linewidth=1.5, label='Trajectory')
     
-    # Plot trajectory with color gradient
-    plt.scatter(points[:,0], points[:,1], c=colors, cmap='viridis', 
-               s=30, alpha=0.6, label='Trajectory Points')
-    plt.plot(points[:,0], points[:,1], 'k-', alpha=0.3, linewidth=0.5)
-    
-    # Add arrows every n points
-    n = len(trajectory) // 20  # Show 20 arrows along the path
+    # Add small arrows every n points
+    n = len(trajectory) // 15  # Show 15 arrows along the path
     for i in range(0, len(trajectory), n):
         if i+1 < len(trajectory):
-            dx = math.cos(thetas[i]) * 0.1
-            dy = math.sin(thetas[i]) * 0.1
+            dx = math.cos(thetas[i]) * 0.05  # Reduced arrow size
+            dy = math.sin(thetas[i]) * 0.05  # Reduced arrow size
             plt.arrow(trajectory[i,0], trajectory[i,1], dx, dy,
-                     head_width=0.05, head_length=0.1, fc='red', ec='red', alpha=0.5)
+                     head_width=0.02, head_length=0.03, fc='red', ec='red', alpha=0.5)
     
-    plt.title('Duckiebot Trajectory with Direction Indicators')
+    # Add start and end points
+    plt.plot(trajectory[0,0], trajectory[0,1], 'go', label='Start')
+    plt.plot(trajectory[-1,0], trajectory[-1,1], 'ro', label='End')
+    
+    plt.title('Duckiebot Trajectory')
     plt.xlabel('X Position (m)')
     plt.ylabel('Y Position (m)')
-    plt.grid(True, linestyle='--', alpha=0.7)
+    plt.grid(True, linestyle='--', alpha=0.3)
     plt.axis('equal')
     plt.legend()
-    
-    # Add start and end markers
-    plt.plot(trajectory[0,0], trajectory[0,1], 'go', label='Start', markersize=15)
-    plt.plot(trajectory[-1,0], trajectory[-1,1], 'ro', label='End', markersize=15)
     
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
     plt.close()
