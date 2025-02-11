@@ -55,10 +55,12 @@ for topic, msg, t in bag.read_messages(topics=[wheels_topic]):
     theta += change_in_theta_r * dt
 
     trajectory.append((xi,yi))
+    time_elapsed += dt
 
 bag.close()
 
 trajectory = np.array(trajectory)
+print(f"Time Elapsed: {time_elapsed}")
 plt.figure()
 plt.plot(trajectory[:,0], trajectory[:,1], label="Duckiebot Trajectory")
 plt.xlabel("X Position")

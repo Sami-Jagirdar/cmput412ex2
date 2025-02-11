@@ -1,3 +1,46 @@
+
+# Duckiebot Exercise 2 - Code Implementation
+
+## Collaborators
+Sami Jagirdar [ccid: jagirdar]
+Basia Ofovwe [ccid: ofovwe]
+
+## Customize and Annotate Camera Image
+
+./packages/ex2p1/src/camera_reader_node.py for the Node implementation
+./launchers/ex2p1-camera-reader.sh to launch the program
+
+## Straight Line Task (1.25m Forwards & Backwards)
+
+./packages/ex2p2/src/straight_line_task.py for the Node implementation
+./launchers/ex2p1-straight-line.sh to launch the program
+
+## Rotation Task (90 degrees clockwise and counter-clockwise)
+
+./packages/ex2p2/src/rotation_task.py for the Node implementation
+./launchers/ex2p2-rotate.sh to launch the program
+
+## D-Shape Trajectory using LEDs to signal state
+
+./packages/ex2p3/src/wheel_of_D_node.py for the main task logic of following the D-shaped path and publishing the states of the trajectory
+
+./packages/ex2p3/src/led_service_node.py for subscribing to states topic and controlling the LED lights based on the state data received
+
+./launchers/ex2p3-D.sh to launch the main task
+./launchers/ex2p3-led-service.sh to launch the LED control service task
+
+## Plot tracked trajectory from rosbag files
+
+./bag_decode/plot_trajectory_from_velocity.py script to load the contents of the bag file, calculate the x and y positions in the world frame and plot the trajectory
+
+./bag_decode/plot_trajectory_animate.py The same exact logic for plotting the trajectory, but included functions to animate the plotted trajectory in gif (the code for animating the plot was generated using the help of ChatGPT)
+
+## Full Write-up
+
+You can read the full project write-up on my website:  
+👉 [Project Page](https://sami-portfolio-xi.vercel.app/projects/CMPUT412/ex2)
+
+___
 # Template: template-ros
 
 This template provides a boilerplate repository
