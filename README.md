@@ -2,8 +2,8 @@
 # Duckiebot Exercise 2 - Code Implementation
 
 ## Collaborators
-Sami Jagirdar [ccid: jagirdar]
-Basia Ofovwe [ccid: ofovwe]
+Sami Jagirdar [ccid: jagirdar, sid: 1686267]
+Basia Ofovwe [ccid: ofovwe, sid: 1667223]
 
 ## Customize and Annotate Camera Image
 
